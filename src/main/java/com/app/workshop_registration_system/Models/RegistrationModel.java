@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,13 +27,17 @@ import lombok.Setter;
  * - Esta es la parte "dueña" de la relación (propietaria de la clave foránea).
  * 
  * - Cada inscripción pertenece a un solo taller
+ * 
+ * 
  */
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Registrations")
+@Table(name = "Registrations",
+uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","workshop_id"})
+)
 public class RegistrationModel {
 
     @Id
@@ -67,5 +72,36 @@ public class RegistrationModel {
         this.workshop = workshop;
         this.registrationDate = registrationDate;
         this.status = status;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((user == null) ? 0 : user.hashCode());
+        result = prime * result + ((workshop == null) ? 0 : workshop.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        RegistrationModel other = (RegistrationModel) obj;
+        if (user == null) {
+            if (other.user != null)
+                return false;
+        } else if (!user.equals(other.user))
+            return false;
+        if (workshop == null) {
+            if (other.workshop != null)
+                return false;
+        } else if (!workshop.equals(other.workshop))
+            return false;
+        return true;
     }
 }
