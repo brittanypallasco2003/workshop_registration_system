@@ -10,6 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Representa a inscripción en el sistema
@@ -23,8 +26,10 @@ import jakarta.persistence.Table;
  * - Cada inscripción pertenece a un solo taller
  */
 
-
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "Registrations")
 public class RegistrationModel {
 
@@ -53,4 +58,11 @@ public class RegistrationModel {
 
     private StatusEnum status;
 
+    public RegistrationModel(UserModel user, WorkshopModel workshop, LocalDateTime registrationDate,
+            StatusEnum status) {
+        this.user = user;
+        this.workshop = workshop;
+        this.registrationDate = registrationDate;
+        this.status = status;
+    }
 }
