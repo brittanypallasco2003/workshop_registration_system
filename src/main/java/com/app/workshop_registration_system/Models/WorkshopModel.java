@@ -2,6 +2,7 @@ package com.app.workshop_registration_system.Models;
 
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -63,5 +64,18 @@ public class WorkshopModel {
 
     private boolean active;
 
+    public WorkshopModel() {
+        this.registrations= new HashSet<>();
+    }
+
+    public WorkshopModel(String name, String description, LocalDateTime startDate, Integer availablePlaces,
+            String place, boolean active) {
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.availablePlaces = availablePlaces;
+        this.place = place;
+        this.active = active;
+    }
 
 }
