@@ -12,7 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -68,6 +70,7 @@ public class WorkshopModel {
         this.registrations= new HashSet<>();
     }
 
+    @Builder
     public WorkshopModel(String name, String description, LocalDateTime startDate, Integer availablePlaces,
             String place, boolean active) {
         this.name = name;
@@ -102,7 +105,4 @@ public class WorkshopModel {
             return false;
         return true;
     }
-
-    
-
 }
