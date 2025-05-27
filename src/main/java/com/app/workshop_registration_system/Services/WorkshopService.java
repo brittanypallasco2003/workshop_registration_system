@@ -10,7 +10,7 @@ import com.app.workshop_registration_system.Models.DTO.WorkshopResponseDTO;
 public interface WorkshopService {
 
     List<WorkshopResponseDTO> getAllWorkshops();
-    Optional<WorkshopModel> getSpecificWorkshop();
+    Optional<WorkshopResponseDTO> getSpecificWorkshop();
     WorkshopResponseDTO createWorkshop(WorkshopRequestDTO workshopRequestDTO);
     WorkshopModel updateWorkshop();
     void deleteWorkshop();
