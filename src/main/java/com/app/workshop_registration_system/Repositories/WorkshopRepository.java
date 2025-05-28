@@ -8,5 +8,5 @@ import com.app.workshop_registration_system.Models.WorkshopModel;
 
 public interface WorkshopRepository extends CrudRepository<WorkshopModel, Long> {
 
-    List<WorkshopModel>findByActiveTrue();
+    List<WorkshopModel>findByActiveTrueAndAvailablePlacesGreaterThanEqual(Integer numMinPlaces);
 }
