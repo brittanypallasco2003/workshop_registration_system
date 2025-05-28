@@ -23,8 +23,8 @@ public class WorkshopServiceImpl implements WorkshopService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<WorkshopResponseDTO> getAllWorkshops() {
-        List<WorkshopModel> workshops = (List<WorkshopModel>) workshopRepository.findAll();
+    public List<WorkshopResponseDTO> getAllActiveWorkshops() {
+        List<WorkshopModel> workshops = workshopRepository.findByActiveTrueAndAvailablePlacesGreaterThanEqual(1);
 
         return workshops.stream()
                 .map(workshop -> new WorkshopResponseDTO(workshop.getId(), workshop.getName(),
@@ -33,10 +33,16 @@ public class WorkshopServiceImpl implements WorkshopService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Optional<WorkshopResponseDTO> getSpecificWorkshop() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSpecificWorkshop'");
+    public Optional<WorkshopResponseDTO> getSpecificWorkshop(Long id) {
+        Optional<WorkshopModel> workshopOptional = workshopRepository.findById(id);
+
+        return workshopOptional.map(workshop -> {
+            return new WorkshopResponseDTO(workshop.getId(), workshop.getName(), workshop.getDescription(),
+                    workshop.getStartDate(), workshop.getAvailablePlaces(), workshop.getPlace(), workshop.isActive());
+        });
+
     }
 
     @Transactional
@@ -54,26 +60,68 @@ public class WorkshopServiceImpl implements WorkshopService {
         WorkshopModel workshopCreated = workshopRepository.save(workshopModel);
 
         return new WorkshopResponseDTO(
-            workshopCreated.getId(),
-            workshopCreated.getName(),
-            workshopCreated.getDescription(),
-            workshopCreated.getStartDate(),
-            workshopCreated.getAvailablePlaces(),
-            workshopCreated.getPlace(),
-            workshopCreated.isActive()
-        );
+                workshopCreated.getId(),
+                workshopCreated.getName(),
+                workshopCreated.getDescription(),
+                workshopCreated.getStartDate(),
+                workshopCreated.getAvailablePlaces(),
+                workshopCreated.getPlace(),
+                workshopCreated.isActive());
     }
 
+    @Transactional
     @Override
-    public WorkshopModel updateWorkshop() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateWorkshop'");
+    public Optional<WorkshopResponseDTO> updateWorkshop(WorkshopRequestDTO workshopRequestDTO, Long id) {
+        return workshopRepository.findById(id)
+                .map(workshop -> {
+                    workshop.setName(workshopRequestDTO.name());
+                    workshop.setDescription(workshopRequestDTO.description());
+                    workshop.setStartDate(workshopRequestDTO.startDate());
+                    workshop.setAvailablePlaces(workshopRequestDTO.availablePlaces());
+                    workshop.setPlace(workshopRequestDTO.place());
+                    workshop.setActive(workshopRequestDTO.active());
+
+                    WorkshopModel workshopDb = workshopRepository.save(workshop);
+
+                    return new WorkshopResponseDTO(
+                            workshopDb.getId(),
+                            workshopDb.getName(),
+                            workshopDb.getDescription(),
+                            workshopDb.getStartDate(),
+                            workshopDb.getAvailablePlaces(),
+                            workshopDb.getPlace(),
+                            workshopDb.isActive());
+                });
     }
 
+    @Transactional
     @Override
-    public void deleteWorkshop() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteWorkshop'");
+    public boolean deleteWorkshop(Long id) {
+        Optional<WorkshopModel> workshOptional = workshopRepository.findById(id);
+        workshOptional.ifPresent(workshop -> workshopRepository.delete(workshop));
+
+        return workshOptional.isPresent();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<WorkshopResponseDTO> getAllWorkshopsAdmin() {
+        
+        List<WorkshopModel> workshops=(List<WorkshopModel>) workshopRepository.findAll();
+
+        return workshops.stream()
+        .map(workshop->{
+            return new WorkshopResponseDTO(
+                workshop.getId(),
+                workshop.getName(),
+                workshop.getDescription(),
+                workshop.getStartDate(),
+                workshop.getAvailablePlaces(),
+                workshop.getPlace(),
+                workshop.isActive()
+            );
+        }).collect(Collectors.toList());
+       
     }
 
 }

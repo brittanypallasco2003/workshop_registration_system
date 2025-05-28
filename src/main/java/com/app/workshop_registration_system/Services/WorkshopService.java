@@ -7,7 +7,8 @@ import com.app.workshop_registration_system.Models.DTO.WorkshopResponseDTO;
 
 public interface WorkshopService {
 
-    List<WorkshopResponseDTO> getAllWorkshops();
+    List<WorkshopResponseDTO> getAllActiveWorkshops();
+    List<WorkshopResponseDTO> getAllWorkshopsAdmin();
 
     Optional<WorkshopResponseDTO> getSpecificWorkshop(Long id);
 
