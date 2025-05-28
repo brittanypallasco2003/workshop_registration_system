@@ -41,17 +41,18 @@ public class UserModel {
     @JoinColumn(name = "role_id")
     private RoleModel roleModel;
 
+    @Column(name = "is_enabled")
+    private boolean isEnable;
+
+    @Column(name = "account_No_expired")
+    private boolean accountNoExpired;
+    @Column(name = "account_No_locked")
+    private boolean accountNoLocked;
+    @Column(name = "credential_No_expired")
+    private boolean credentialNoExpired;
+
     @Builder
-    public UserModel(String name, String lastname, String email, String phoneNumber, LocalDateTime createdAt,
-            LocalDateTime updatedAt, RoleModel roleModel) {
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.roleModel = roleModel;
-    }
+  
 
     @Override
     public int hashCode() {
@@ -59,6 +60,19 @@ public class UserModel {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
+    }
+
+    public UserModel(String name, String lastname, String email, String phoneNumber, RoleModel roleModel,
+            boolean isEnable, boolean accountNoExpired, boolean accountNoLocked, boolean credentialNoExpired) {
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.roleModel = roleModel;
+        this.isEnable = isEnable;
+        this.accountNoExpired = accountNoExpired;
+        this.accountNoLocked = accountNoLocked;
+        this.credentialNoExpired = credentialNoExpired;
     }
 
     @Override
