@@ -29,7 +29,10 @@ public class UserModel {
     private Long id;
     private String name;
     private String lastname;
+    @Column(unique = true)
     private String email;
+
+    private String password;
     @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "created_at")
@@ -50,8 +53,6 @@ public class UserModel {
     private boolean accountNoLocked;
     @Column(name = "credential_No_expired")
     private boolean credentialNoExpired;
-
-    @Builder
   
 
     @Override
@@ -62,11 +63,14 @@ public class UserModel {
         return result;
     }
 
-    public UserModel(String name, String lastname, String email, String phoneNumber, RoleModel roleModel,
-            boolean isEnable, boolean accountNoExpired, boolean accountNoLocked, boolean credentialNoExpired) {
+    @Builder
+    public UserModel(String name, String lastname, String email, String password, String phoneNumber,
+            RoleModel roleModel, boolean isEnable, boolean accountNoExpired, boolean accountNoLocked,
+            boolean credentialNoExpired) {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
+        this.password = password;
         this.phoneNumber = phoneNumber;
         this.roleModel = roleModel;
         this.isEnable = isEnable;
@@ -74,6 +78,8 @@ public class UserModel {
         this.accountNoLocked = accountNoLocked;
         this.credentialNoExpired = credentialNoExpired;
     }
+
+
 
     @Override
     public boolean equals(Object obj) {
