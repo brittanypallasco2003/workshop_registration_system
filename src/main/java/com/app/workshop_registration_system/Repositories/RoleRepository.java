@@ -4,10 +4,11 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
+import com.app.workshop_registration_system.Models.RoleEnum;
 import com.app.workshop_registration_system.Models.RoleModel;
 
 public interface RoleRepository extends CrudRepository<RoleModel, Long> {
 
-    Optional<RoleModel> findByRoleEnum(String roleName);
+    Optional<RoleModel> findByRoleEnum(RoleEnum roleName);
 
 }
