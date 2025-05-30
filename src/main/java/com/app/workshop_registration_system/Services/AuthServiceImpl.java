@@ -1,14 +1,10 @@
 package com.app.workshop_registration_system.Services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
 
         String encryptedPassword = passwordEncoder.encode(passwordRequest);
 
-        Optional<RoleModel> participantRole = roleRepository.findByRoleEnum(RoleEnum.PARTICIPANT.name());
+        Optional<RoleModel> participantRole = roleRepository.findByRoleEnum(RoleEnum.PARTICIPANT);
 
         participantRole.orElseThrow(() -> new IllegalArgumentException("Rol especificado no existe"));
 
@@ -89,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
 
         String encryptedPassword = passwordEncoder.encode(passwordRequest);
 
-        Optional<RoleModel> participantRole = roleRepository.findByRoleEnum(RoleEnum.ADMIN.name());
+        Optional<RoleModel> participantRole = roleRepository.findByRoleEnum(RoleEnum.ADMIN);
 
         participantRole.orElseThrow(() -> new IllegalArgumentException("Rol especificado no existe"));
 
