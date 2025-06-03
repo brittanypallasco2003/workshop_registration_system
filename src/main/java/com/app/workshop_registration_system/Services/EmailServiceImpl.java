@@ -4,12 +4,11 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.app.workshop_registration_system.Advice.EmailSendException;
 import com.app.workshop_registration_system.Config.MailSenderProperties;
 import com.app.workshop_registration_system.Utils.EmailUtils;
 
@@ -42,21 +41,17 @@ public class EmailServiceImpl implements EmailService {
             html = html.replace("[[" + entry.getKey() + "]]", entry.getValue());
         }
 
-        MimeMessage message=javaMailSender.createMimeMessage();
-
+        MimeMessage message = javaMailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper= new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
             helper.setFrom(mailSenderProperties.getEmailFrom());
             helper.setTo(toUser);
             helper.setSubject(subject);
             helper.setText(html, true);
             javaMailSender.send(message);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error al enviar correo de confirmación");
+        } catch (MessagingException e) {
+            throw new EmailSendException("Error al enviar el correo", e);
         }
-   
-
     }
 
     @Override
