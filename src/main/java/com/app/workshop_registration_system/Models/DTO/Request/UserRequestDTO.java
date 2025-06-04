@@ -1,4 +1,4 @@
-package com.app.workshop_registration_system.Models.DTO;
+package com.app.workshop_registration_system.Models.DTO.Request;
 
 import com.app.workshop_registration_system.Validation.Annotation.IsExistPhoneNumber;
 import com.app.workshop_registration_system.Validation.Annotation.NotBlankIfPresent;

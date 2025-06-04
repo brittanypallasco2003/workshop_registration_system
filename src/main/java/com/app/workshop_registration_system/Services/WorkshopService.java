@@ -2,8 +2,9 @@ package com.app.workshop_registration_system.Services;
 
 import java.util.List;
 import java.util.Optional;
-import com.app.workshop_registration_system.Models.DTO.WorkshopRequestDTO;
-import com.app.workshop_registration_system.Models.DTO.WorkshopResponseDTO;
+
+import com.app.workshop_registration_system.Models.DTO.Request.WorkshopRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.WorkshopResponseDTO;
 
 public interface WorkshopService {
 

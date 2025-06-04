@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.workshop_registration_system.Models.UserModel;
-import com.app.workshop_registration_system.Models.DTO.UserRequestDTO;
-import com.app.workshop_registration_system.Models.DTO.UserResponseDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.UserRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.UserResponseDTO;
 import com.app.workshop_registration_system.Repositories.UserRepository;
 
 import jakarta.persistence.EntityManager;

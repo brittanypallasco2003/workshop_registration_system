@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.workshop_registration_system.Advice.EntityNotFoundException;
-import com.app.workshop_registration_system.Models.DTO.WorkshopRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.WorkshopRequestDTO;
 import com.app.workshop_registration_system.Services.WorkshopServiceImpl;
 
 import jakarta.validation.Valid;

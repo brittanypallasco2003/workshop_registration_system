@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.workshop_registration_system.Models.WorkshopModel;
-import com.app.workshop_registration_system.Models.DTO.WorkshopRequestDTO;
-import com.app.workshop_registration_system.Models.DTO.WorkshopResponseDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.WorkshopRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.WorkshopResponseDTO;
 import com.app.workshop_registration_system.Repositories.WorkshopRepository;
 
 @Service

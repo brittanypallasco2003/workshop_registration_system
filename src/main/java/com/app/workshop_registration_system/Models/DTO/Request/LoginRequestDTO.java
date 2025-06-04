@@ -1,4 +1,4 @@
-package com.app.workshop_registration_system.Models.DTO;
+package com.app.workshop_registration_system.Models.DTO.Request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.workshop_registration_system.Advice.EntityNotFoundException;
-import com.app.workshop_registration_system.Models.DTO.UserRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.UserRequestDTO;
 import com.app.workshop_registration_system.Services.UserServiceImpl;
 
 import jakarta.validation.Valid;

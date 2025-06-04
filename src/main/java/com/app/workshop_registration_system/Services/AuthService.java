@@ -1,9 +1,9 @@
 package com.app.workshop_registration_system.Services;
 
-import com.app.workshop_registration_system.Models.DTO.LoginRequestDTO;
-import com.app.workshop_registration_system.Models.DTO.LoginResponseDTO;
-import com.app.workshop_registration_system.Models.DTO.RegisterResponseDTO;
-import com.app.workshop_registration_system.Models.DTO.RegisterUserRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.LoginRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.RegisterUserRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.LoginResponseDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.RegisterResponseDTO;
 
 public interface AuthService {
 

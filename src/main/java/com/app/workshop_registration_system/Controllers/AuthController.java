@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.workshop_registration_system.Models.DTO.LoginRequestDTO;
-import com.app.workshop_registration_system.Models.DTO.RegisterUserRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.LoginRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Request.RegisterUserRequestDTO;
 import com.app.workshop_registration_system.Services.AuthServiceImpl;
 
 import jakarta.validation.Valid;

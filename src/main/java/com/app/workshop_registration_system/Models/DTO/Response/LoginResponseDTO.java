@@ -1,4 +1,4 @@
-package com.app.workshop_registration_system.Models.DTO;
+package com.app.workshop_registration_system.Models.DTO.Response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
