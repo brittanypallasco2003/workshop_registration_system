@@ -12,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -105,4 +104,12 @@ public class WorkshopModel {
             return false;
         return true;
     }
+
+    public WorkshopModel addRegistration(RegistrationModel registration){
+        registrations.add(registration);
+        registration.setWorkshop(this);
+        return this;
+    }
+
+
 }
