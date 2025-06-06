@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface EmailService {
 
-    void sendEmail(String toUser, String subject, Map<String, String>variables);
+    void sendEmail(String toUser, String subject, Map<String, String>variables, String nameFile);
 
     void sendEmailWithFile(String toUser, String subject, String message, File file);
 

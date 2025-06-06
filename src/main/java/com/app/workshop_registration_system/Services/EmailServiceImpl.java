@@ -32,9 +32,9 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendEmail(String toUser, String subject, Map<String, String> variables) {
+    public void sendEmail(String toUser, String subject, Map<String, String> variables, String namefile) {
 
-        String html = emailUtils.loadHtmlTemplate("templates/email/registro_confirmado.html");
+        String html = emailUtils.loadHtmlTemplate("templates/email/".concat(namefile));
 
         // Reemplazar variables en el HTML
         for (Map.Entry<String, String> entry : variables.entrySet()) {

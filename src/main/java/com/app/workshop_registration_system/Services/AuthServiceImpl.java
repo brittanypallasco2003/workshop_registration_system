@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
 
         Map<String, String> datos = new HashMap<>();
         datos.put("name",userCreated.getName()+" "+userCreated.getLastname());
-        emailServiceImpl.sendEmail(userCreated.getEmail(), "Registro workshop system", datos);
+        emailServiceImpl.sendEmail(userCreated.getEmail(), "Registro workshop system", datos, "registro_confirmado.html");
        
         // En caso de querer crear un token al registrarse
         // SimpleGrantedAuthority authority=new
