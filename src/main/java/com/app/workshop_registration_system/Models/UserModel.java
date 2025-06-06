@@ -1,6 +1,8 @@
 package com.app.workshop_registration_system.Models;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,19 +11,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "Users")
 @Getter
 @Setter
-@NoArgsConstructor
 public class UserModel {
 
     @Id
@@ -44,6 +45,9 @@ public class UserModel {
     @JoinColumn(name = "role_id")
     private RoleModel roleModel;
 
+    @OneToMany(mappedBy = "user",orphanRemoval = true)
+    private Set<RegistrationModel> registrations;
+
     @Column(name = "is_enabled")
     private boolean isEnable;
 
@@ -61,6 +65,10 @@ public class UserModel {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
+    }
+
+    public UserModel() {
+        this.registrations= new HashSet<>();
     }
 
     @Builder
@@ -106,6 +114,12 @@ public class UserModel {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public UserModel addRegistration(RegistrationModel registration){
+        registrations.add(registration);
+        registration.setUser(this);
+        return this;
     }
 
 }
