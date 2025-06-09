@@ -31,11 +31,11 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final EmailServiceImpl emailServiceImpl;
+    private final EmailService emailServiceImpl;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager, JwtUtils jwtUtils,
             PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository,
-            EmailServiceImpl emailServiceImpl) {
+            EmailService emailServiceImpl) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
