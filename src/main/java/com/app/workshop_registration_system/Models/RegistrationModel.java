@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -67,6 +68,7 @@ public class RegistrationModel {
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
+    @Builder
     public RegistrationModel(UserModel user, WorkshopModel workshop, LocalDateTime registrationDate,
             StatusEnum status) {
         this.user = user;
