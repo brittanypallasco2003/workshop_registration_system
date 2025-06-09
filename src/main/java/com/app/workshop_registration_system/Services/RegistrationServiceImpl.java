@@ -34,12 +34,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserRepository userRepository;
 
-    private final EmailServiceImpl emailServiceImpl;
+    private final EmailService emailServiceImpl;
 
     private final AuthenticatedUserService authenticatedUserService;
 
     public RegistrationServiceImpl(RegistrationRepository registrationRepository, WorkshopRepository workshopRepository,
-            UserRepository userRepository, EmailServiceImpl emailServiceImpl,
+            UserRepository userRepository, EmailService emailServiceImpl,
             AuthenticatedUserService authenticatedUserService) {
         this.registrationRepository = registrationRepository;
         this.workshopRepository = workshopRepository;
@@ -64,7 +64,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .orElseThrow(() -> new EntityNotFoundException("Taller no encontrado"));
 
         // 2.1 verifica que no el usuario no este inscrito previamente
-        if (registrationRepository.buscarPorUsuarioYTaller(userDb.getId(), userDb.getId()).isPresent()) {
+        if (registrationRepository.buscarPorUsuarioYTaller(userDb.getId(), workshopDb.getId()).isPresent()) {
             throw new IllegalStateException("El usuario ya está inscrito en este taller");
         }
 
