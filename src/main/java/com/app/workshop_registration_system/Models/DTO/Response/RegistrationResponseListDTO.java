@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "message", "id", "idUser", "workshopResponseDTO", "registrationDate", "status" })
-public record RegistrationResponseDTO(String message, Long id, Long idUser, WorkshopResponseDTO workshopResponseDTO,
+@JsonPropertyOrder({ "id", "idUser", "workshopResponseDTO", "registrationDate", "status" })
+public record RegistrationResponseListDTO(
+        Long id, Long idUser, WorkshopResponseDTO workshopResponseDTO,
         LocalDateTime registrationDate,
         String status) {
 
