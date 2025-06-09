@@ -2,10 +2,11 @@ package com.app.workshop_registration_system.Services;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ import com.app.workshop_registration_system.Models.UserModel;
 import com.app.workshop_registration_system.Models.WorkshopModel;
 import com.app.workshop_registration_system.Models.DTO.Request.RegistrationRequestDTO;
 import com.app.workshop_registration_system.Models.DTO.Response.RegistrationResponseDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.RegistrationResponseListDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.WorkshopResponseDTO;
 import com.app.workshop_registration_system.Repositories.RegistrationRepository;
 import com.app.workshop_registration_system.Repositories.UserRepository;
 import com.app.workshop_registration_system.Repositories.WorkshopRepository;
@@ -33,12 +36,16 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private final EmailServiceImpl emailServiceImpl;
 
+    private final AuthenticatedUserService authenticatedUserService;
+
     public RegistrationServiceImpl(RegistrationRepository registrationRepository, WorkshopRepository workshopRepository,
-            UserRepository userRepository, EmailServiceImpl emailServiceImpl) {
+            UserRepository userRepository, EmailServiceImpl emailServiceImpl,
+            AuthenticatedUserService authenticatedUserService) {
         this.registrationRepository = registrationRepository;
         this.workshopRepository = workshopRepository;
         this.userRepository = userRepository;
         this.emailServiceImpl = emailServiceImpl;
+        this.authenticatedUserService = authenticatedUserService;
     }
 
     @Transactional
@@ -49,7 +56,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         UserModel userDb = userRepository.findById(requestDTO.userId())
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
-        // 2. verificar existencia del taller 
+        if (!authenticatedUserService.isCurrentUser(requestDTO.userId())) {
+            throw new AccessDeniedException("No tienes permitido acceder este recurso");
+        }
+        // 2. verificar existencia del taller
         WorkshopModel workshopDb = workshopRepository.findById(requestDTO.workshopId())
                 .orElseThrow(() -> new EntityNotFoundException("Taller no encontrado"));
 
@@ -100,33 +110,20 @@ public class RegistrationServiceImpl implements RegistrationService {
                 "registration.html");
 
         // 9. devolver DTO
-        return mapResponseDTO(savedRegistration,"Inscripción realizada");
+        return mapResponseDTO(savedRegistration, workshopUpdated, "Inscripción realizada");
 
-    }
-
-    private RegistrationResponseDTO mapResponseDTO(RegistrationModel registration, String message) {
-        return new RegistrationResponseDTO(message,registration.getId(), registration.getUser().getId(),
-                registration.getWorkshop().getId(), registration.getRegistrationDate(),
-                registration.getStatus().name());
-
-    }
-
-    private Map<String, String> createDataEmail(WorkshopModel workshopModel) {
-        LocalDateTime fechaHora = workshopModel.getStartDate();
-        DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy");
-        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
-        String fecha = fechaHora.format(formatterFecha);
-        String hora = fechaHora.format(formatterHora);
-
-        return Map.of("taller", workshopModel.getName(), "fecha", fecha, "hora", hora);
     }
 
     @Transactional
     @Override
     public void cancelRegistration(Long id) {
-        RegistrationModel registrationModel = registrationRepository.findById(id)
+        RegistrationModel registrationModel = registrationRepository.findByIdWithUserAndWorkshop(id)
                 .orElseThrow(() -> new EntityNotFoundException("Inscripción no encontrada"));
 
+
+        if (!authenticatedUserService.isCurrentUser(registrationModel.getUser().getId())) {
+            throw new AccessDeniedException("No tienes permitido cancelar esta inscripción");
+        }
         registrationModel.setStatus(StatusEnum.CANCELED);
 
         WorkshopModel workshopModel = registrationModel.getWorkshop();
@@ -141,31 +138,84 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     @Override
     public RegistrationResponseDTO reactivateRegistration(Long id) {
-        RegistrationModel registration=registrationRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Inscripción no realizada"));
+        RegistrationModel registration = registrationRepository.findByIdWithUserAndWorkshop(id)
+                .orElseThrow(() -> new EntityNotFoundException("Inscripción no realizada"));
 
-        if (registration.getStatus()!=StatusEnum.CANCELED) {
+        
+        if (!authenticatedUserService.isCurrentUser(registration.getUser().getId())) {
+            throw new AccessDeniedException("No tienes permitido reactivar esta inscripción");
+        }
+
+        if (registration.getStatus() != StatusEnum.CANCELED) {
             throw new IllegalStateException("Solo se pueden reactivar inscripciones canceladas");
         }
 
         registration.setStatus(StatusEnum.CONFIRMED);
-        WorkshopModel workshopModel= registration.getWorkshop();
+        WorkshopModel workshopModel = registration.getWorkshop();
 
         if (!workshopModel.isActive()) {
             throw new IllegalStateException("El taller está inactivo y no acepta inscripciones");
         }
 
-        if (workshopModel.getAvailablePlaces()==0) {
+        if (workshopModel.getAvailablePlaces() == 0) {
             workshopModel.setActive(false);
             workshopRepository.save(workshopModel);
             throw new PlacesSoldOutException("No hay cupos disponibles para este taller");
         }
 
-        workshopModel.setAvailablePlaces(workshopModel.getAvailablePlaces()-1);
+        workshopModel.setAvailablePlaces(workshopModel.getAvailablePlaces() - 1);
         registrationRepository.save(registration);
-        workshopRepository.save(workshopModel);
-        return mapResponseDTO(registration, "Inscripción actualizada");
+        WorkshopModel worshopUpdated = workshopRepository.save(workshopModel);
+        return mapResponseDTO(registration, worshopUpdated, "Inscripción actualizada");
     }
 
-    
+    @Override
+    public List<RegistrationResponseListDTO> getAllRegistrationByUser(Long id) {
+        UserModel userModel = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        
+        if (!authenticatedUserService.isCurrentUser(id)) {
+            throw new AccessDeniedException("No tienes permitido ver estas inscripciones");
+        }
+        
+        List<RegistrationModel> registrationsByUser = registrationRepository
+                .getRegistrationsByUserId(userModel.getId());
+
+        return registrationsByUser.stream()
+                .map(r -> {
+                    return new RegistrationResponseListDTO(r.getId(),
+                            r.getUser().getId(),
+                            mapWorkshopResponseDTO(r.getWorkshop()),
+                            r.getRegistrationDate(),
+                            r.getStatus().toString());
+                })
+                .collect(Collectors.toList());
+    }
+
+    private RegistrationResponseDTO mapResponseDTO(RegistrationModel registration, WorkshopModel workshopModel,
+            String message) {
+        return new RegistrationResponseDTO(message,
+                registration.getId(),
+                registration.getUser().getId(),
+                mapWorkshopResponseDTO(workshopModel),
+                registration.getRegistrationDate(),
+                registration.getStatus().toString());
+    }
+
+    private WorkshopResponseDTO mapWorkshopResponseDTO(WorkshopModel workshopModel) {
+        return new WorkshopResponseDTO(workshopModel.getId(), workshopModel.getName(), workshopModel.getDescription(),
+                workshopModel.getStartDate(), workshopModel.getAvailablePlaces(), workshopModel.getPlace(),
+                workshopModel.isActive());
+    }
+
+    private Map<String, String> createDataEmail(WorkshopModel workshopModel) {
+        LocalDateTime fechaHora = workshopModel.getStartDate();
+        DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy");
+        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");
+        String fecha = fechaHora.format(formatterFecha);
+        String hora = fechaHora.format(formatterHora);
+
+        return Map.of("taller", workshopModel.getName(), "fecha", fecha, "hora", hora);
+    }
 
 }
