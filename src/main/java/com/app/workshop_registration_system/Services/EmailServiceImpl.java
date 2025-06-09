@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.app.workshop_registration_system.Advice.EmailSendException;
@@ -31,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
         this.emailUtils = emailUtils;
     }
 
+    @Async
     @Override
     public void sendEmail(String toUser, String subject, Map<String, String> variables, String namefile) {
 
