@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Order(4)
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handlEntityNotFound(EntityNotFoundException exception) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("status", HttpStatus.NOT_FOUND);
+        body.put("status", HttpStatus.NOT_FOUND.value());
         body.put("message", exception.getMessage());
         body.put("timestamp", LocalDateTime.now());
 
@@ -51,7 +53,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
-    public ResponseEntity<Map<String, Object>> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException exception) {
+    public ResponseEntity<Map<String, Object>> handleInvalidDataAccessApiUsageException(
+            InvalidDataAccessApiUsageException exception) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("message", "Los datos enviados no están en el formato adecuado");
@@ -61,10 +64,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>>handleGeneralErrors(Exception exception){
-        Map<String, Object> body= new LinkedHashMap<>();
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        body.put("message", "Error inesperado: "+exception.getMessage());
+    public ResponseEntity<Map<String, Object>> handleGeneralErrors(Exception exception) {
+        exception.printStackTrace(); // O usa un logger
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("message", "Ha ocurrido un error inesperado");
         body.put("timestamp", LocalDateTime.now());
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);

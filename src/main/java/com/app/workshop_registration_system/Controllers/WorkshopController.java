@@ -2,12 +2,16 @@ package com.app.workshop_registration_system.Controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.app.workshop_registration_system.Advice.EntityNotFoundException;
 import com.app.workshop_registration_system.Models.DTO.Request.WorkshopRequestDTO;
+import com.app.workshop_registration_system.Models.DTO.Response.WorkshopResponseDTO;
 import com.app.workshop_registration_system.Services.WorkshopServiceImpl;
 
 import jakarta.validation.Valid;
+
+import java.net.URI;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,11 +55,16 @@ public class WorkshopController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?> postWorkshop(@RequestBody @Valid WorkshopRequestDTO workshopRequestDTO) {
+        WorkshopResponseDTO responseDTO = workshopServiceImpl.createWorkshop(workshopRequestDTO);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(responseDTO.id())
+                .toUri();
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(workshopServiceImpl.createWorkshop(workshopRequestDTO));
+                .created(location)
+                .body(responseDTO);
     }
-
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")

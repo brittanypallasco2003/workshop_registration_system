@@ -2,9 +2,11 @@ package com.app.workshop_registration_system.Services;
 
 import java.util.Optional;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.workshop_registration_system.Advice.ForbiddenOperationException;
 import com.app.workshop_registration_system.Models.UserModel;
 import com.app.workshop_registration_system.Models.DTO.Request.UserRequestDTO;
 import com.app.workshop_registration_system.Models.DTO.Response.UserResponseDTO;
@@ -17,10 +19,12 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
     private final EntityManager entityManager;
+    private final AuthenticatedUserService authenticatedUserService;
 
-    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager) {
+    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager, AuthenticatedUserService authenticatedUserService) {
         this.userRepository = userRepository;
         this.entityManager = entityManager;
+        this.authenticatedUserService=authenticatedUserService;
     }
 
     @Transactional
@@ -28,6 +32,9 @@ public class UserServiceImpl implements UserService {
     public Optional<UserResponseDTO> updateDataUser(UserRequestDTO userRequestDTO, Long id) {
       return userRepository.findById(id)
       .map(user ->{
+        if (!authenticatedUserService.isCurrentUser(id)) {
+          throw new AccessDeniedException("No puedes actualizar los datos de este usuario");
+        }
         user.setName(userRequestDTO.name()!=null? userRequestDTO.name():user.getName());
 
         user.setLastname(userRequestDTO.lastname()!=null? userRequestDTO.lastname():user.getLastname());

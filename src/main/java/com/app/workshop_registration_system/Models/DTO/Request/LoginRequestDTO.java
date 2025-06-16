@@ -6,5 +6,5 @@ import jakarta.validation.constraints.Size;
 
 public record LoginRequestDTO(
         @NotBlank @Email String email,
-        @NotBlank @Size(min = 8) String password) {
+        @NotBlank @Size(min = 8, message = "Tu contraseña debe tener mínimo 8 carácteres") String password) {
 }

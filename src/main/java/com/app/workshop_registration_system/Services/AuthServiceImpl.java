@@ -106,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(encryptedPassword)
                 .name(registerAdminDTO.name())
                 .lastname(registerAdminDTO.lastname())
-                .phoneNumber(registerAdminDTO.lastname())
+                .phoneNumber(registerAdminDTO.phoneNumber())
                 .roleModel(participantRole.get())
                 .accountNoExpired(true)
                 .credentialNoExpired(true)

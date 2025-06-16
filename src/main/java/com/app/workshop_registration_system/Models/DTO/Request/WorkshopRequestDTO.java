@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 public record WorkshopRequestDTO(
@@ -21,6 +20,6 @@ public record WorkshopRequestDTO(
         @Min(value = 10)
         @Max(value = 50)
         Integer availablePlaces,
-        @NotBlank String place,
+        @NotBlank @Size(min = 10, message = "Ingresa un lugar válido") String place,
         boolean active) {
 }

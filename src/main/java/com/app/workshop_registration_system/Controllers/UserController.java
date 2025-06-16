@@ -24,7 +24,7 @@ public class UserController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @PreAuthorize("hasRole('PARTICIPANT')")
+    @PreAuthorize("hasRole('PARTICIPANT') or hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<?> patchUser(@RequestBody @Valid UserRequestDTO requestDTO, @PathVariable Long id) {
         return userServiceImpl.updateDataUser(requestDTO, id).map(response->ResponseEntity.ok().body(response)).orElseThrow(()-> new EntityNotFoundException("Usuario "+id+" no registrado"));

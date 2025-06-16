@@ -85,6 +85,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         // 4. Crear nueva inscripción y enlazar con los set en memoria
         RegistrationModel registration = RegistrationModel.builder()
+                .registrationDate(LocalDateTime.now())
                 .status(StatusEnum.CONFIRMED)
                 .build();
 
@@ -120,7 +121,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         RegistrationModel registrationModel = registrationRepository.findByIdWithUserAndWorkshop(id)
                 .orElseThrow(() -> new EntityNotFoundException("Inscripción no encontrada"));
 
-
         if (!authenticatedUserService.isCurrentUser(registrationModel.getUser().getId())) {
             throw new AccessDeniedException("No tienes permitido cancelar esta inscripción");
         }
@@ -141,7 +141,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         RegistrationModel registration = registrationRepository.findByIdWithUserAndWorkshop(id)
                 .orElseThrow(() -> new EntityNotFoundException("Inscripción no realizada"));
 
-        
         if (!authenticatedUserService.isCurrentUser(registration.getUser().getId())) {
             throw new AccessDeniedException("No tienes permitido reactivar esta inscripción");
         }
@@ -151,6 +150,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         registration.setStatus(StatusEnum.CONFIRMED);
+        registration.setRegistrationDate(LocalDateTime.now());
         WorkshopModel workshopModel = registration.getWorkshop();
 
         if (!workshopModel.isActive()) {
@@ -173,11 +173,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     public List<RegistrationResponseListDTO> getAllRegistrationByUser(Long id) {
         UserModel userModel = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
-        
+
         if (!authenticatedUserService.isCurrentUser(id)) {
             throw new AccessDeniedException("No tienes permitido ver estas inscripciones");
         }
-        
+
         List<RegistrationModel> registrationsByUser = registrationRepository
                 .getRegistrationsByUserId(userModel.getId());
 

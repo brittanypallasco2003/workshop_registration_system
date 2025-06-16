@@ -108,8 +108,4 @@ public class RegistrationModel {
         return true;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.registrationDate = LocalDateTime.now();
-    }
 }
