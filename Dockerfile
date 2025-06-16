@@ -1,7 +1,6 @@
 FROM eclipse-temurin:21-jdk as build
 
 WORKDIR /app
-
 COPY . /app
 
 RUN chmod +x mvnw
@@ -10,14 +9,11 @@ RUN mv -f target/*.jar app.jar
 
 FROM eclipse-temurin:21-jre
 
-ARG PORT
-
-ENV PORT=${PORT}
-
+WORKDIR /app
 COPY --from=build /app/app.jar .
 
 RUN useradd runtime
 USER runtime
 
-ENTRYPOINT [ "java", "-Dserver.port=${PORT}", "-Dspring.profiles.active=${MYENV}", "-jar", "app.jar" ]
-
+# Simple entrypoint: deja que Spring tome las env vars
+ENTRYPOINT ["java", "-jar", "app.jar"]
