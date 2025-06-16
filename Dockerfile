@@ -15,5 +15,4 @@ COPY --from=build /app/app.jar .
 RUN useradd runtime
 USER runtime
 
-# Simple entrypoint: deja que Spring tome las env vars
 ENTRYPOINT ["java", "-jar", "app.jar"]
