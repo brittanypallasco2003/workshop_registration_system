@@ -1,0 +1,38 @@
+services:
+  backend:
+    image: brittanynoe/workshop_registration_system:latest
+    container_name: spring-api-container
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-network
+    depends_on:
+      - db
+    environment:
+      - MYENV:dev
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/workshopdb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=secret
+      - JWT_KEY=clave_jwt
+      - MAIL_FROM=correo@example.com
+      - MAIL_PASSWORD=clave_correo
+
+  db:
+    image: mysql:latest
+    container_name: mysql_database
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: workshopdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret_pass_user
+    ports:
+      - 3307:3306
+    networks:
+      - spring-network
+    volumes:
+      - mysql-volume:/var/lib/mysql
+networks:
+  spring-network:
+volumes:
+  mysql-volume:
+  
