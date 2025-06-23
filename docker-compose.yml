@@ -8,14 +8,8 @@ services:
       - spring-network
     depends_on:
       - db
-    environment:
-      - MYENV:dev
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/workshopdb
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=secret
-      - JWT_KEY=clave_jwt
-      - MAIL_FROM=correo@example.com
-      - MAIL_PASSWORD=clave_correo
+    env_file:
+      - .env
 
   db:
     image: mysql:latest
