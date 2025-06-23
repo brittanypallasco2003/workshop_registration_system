@@ -58,6 +58,7 @@ public class SpringSecurityConfig {
                     //Configure public endpoints
                     auth.requestMatchers(HttpMethod.POST, "/auth/sign-up").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/auth/log-in").permitAll();
+                    auth.requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), UsernamePasswordAuthenticationFilter.class)
