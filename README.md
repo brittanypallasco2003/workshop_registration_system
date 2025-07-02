@@ -77,4 +77,4 @@ docker-compose up --build
 
 
 ## Documentación de la API
-https://workshopregistrationsystem-production.up.railway.app/swagger-ui/index.html
+https://workshop-backend.ddns.net/swagger-ui/index.html
