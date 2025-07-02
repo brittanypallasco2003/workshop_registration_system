@@ -72,9 +72,9 @@ docker-compose up --build
 ```
 
 5. Las tablas se crearán automáticamente gracias a JPA/Hibernate (no hay datos iniciales insertados).
-   > [!IMPORTANT]  
-   > Para probar la aplicación, es necesario crear manualmente los roles y un usuario administrador.
+> [!IMPORTANT]  
+> Para probar la aplicación, es necesario crear manualmente los roles y un usuario administrador.
 
 
 ## Documentación de la API
-https://workshopregistrationsystem-production.up.railway.app/swagger-ui/index.html
+https://workshop-backend.ddns.net/swagger-ui/index.html
