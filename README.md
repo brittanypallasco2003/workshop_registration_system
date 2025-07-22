@@ -81,3 +81,138 @@ docker-compose up --build
 
 ## Documentación de la API
 https://workshop-backend.ddns.net/swagger-ui/index.html
+
+
+> [!NOTE]  
+> Todos los endpoints (excepto `/auth/sign-up` y `/auth/log-in`) requieren token JWT en el header:
+
+```
+Authorization: Bearer {token}
+```
+
+---
+
+### 🔑 Auth Controller
+
+#### `POST /auth/sign-up`
+
+Registra un nuevo usuario (rol por defecto).
+
+**Body**:
+
+```json
+{
+  "name": "Ana",
+  "lastname": "Pérez",
+  "email": "ana@mail.com",
+  "password": "12345678",
+  "phoneNumber": "+593987654321"
+}
+```
+
+#### `POST /auth/log-in`
+
+Autentica al usuario y retorna el token JWT.
+
+**Body**:
+
+```json
+{
+  "email": "ana@mail.com",
+  "password": "12345678"
+}
+```
+
+#### `POST /auth/createUser`
+
+Crea un usuario con privilegios administrativos.
+
+---
+
+### 🧑‍💻 User Controller
+
+#### `PATCH /user/{id}`
+
+Actualiza datos personales del usuario (nombre, apellido o teléfono).
+
+**Body**:
+
+```json
+{
+  "name": "Ana",
+  "lastname": "Pérez",
+  "phoneNumber": "+593987654321"
+}
+```
+
+---
+
+### 🧒🏻‍📋 Workshop Controller
+
+#### `GET /workshop/available`
+
+Lista los talleres disponibles (activos y con cupos).
+
+#### `GET /workshop/all`
+
+Lista todos los talleres (solo para administradores).
+
+#### `GET /workshop/{id}`
+
+Consulta los detalles de un taller específico.
+
+#### `POST /workshop/create`
+
+Crea un nuevo taller.
+
+**Body**:
+
+```json
+{
+  "name": "Taller de Java",
+  "description": "Aprende fundamentos de Java",
+  "startDate": "2025-08-01T10:00:00",
+  "availablePlaces": 20,
+  "place": "Quito, Ecuador",
+  "active": true
+}
+```
+
+#### `PUT /workshop/update/{id}`
+
+Actualiza un taller existente.
+
+#### `DELETE /workshop/delete/{id}`
+
+Elimina un taller.
+
+---
+
+### 📌 Registration Controller
+
+#### `POST /registration`
+
+Registra a un usuario en un taller.
+
+**Body**:
+
+```json
+{
+  "userId": 1,
+  "workshopId": 2
+}
+```
+
+#### `PATCH /registration/cancel/{id}`
+
+Cancela una inscripción activa.
+
+#### `PATCH /registration/reactivate/{id}`
+
+Reactiva una inscripción previamente cancelada.
+
+#### `GET /registration/{userId}`
+
+Muestra todas las inscripciones de un usuario.
+
+---
