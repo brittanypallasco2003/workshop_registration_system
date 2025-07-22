@@ -198,8 +198,8 @@ Registra a un usuario en un taller.
 
 ```json
 {
-  "userId": 1,
-  "workshopId": 2
+  "userId": ,
+  "workshopId": 
 }
 ```
 
