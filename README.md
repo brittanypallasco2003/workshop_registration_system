@@ -15,7 +15,6 @@ Sistema backend para la gestión de inscripciones a talleres, desarrollado con J
 | [Java Mail Sender](https://spring.io/projects/spring-framework)                             | Herramienta para enviar correos electrónicos desde la aplicación.                                       | [Documentación](https://docs.spring.io/spring-framework/reference/integration/email.html)              |
 | [Lombok](https://projectlombok.org/)                                                        | Librería para reducir el código repetitivo (getters, setters, constructores, etc.).                     | [Documentación](https://projectlombok.org/features/all)                                                |
 | [PostgreSQL](https://www.postgresql.org/) | Base de datos relacional utilizada para almacenar la información de usuarios, talleres, registros, etc. | [Documentación](https://www.postgresql.org/docs/) |
-[Documentación](https://dev.mysql.com/doc/)                                                            |
 | [Docker](https://www.docker.com/)                                                           | Contenerización de la aplicación para facilitar su despliegue.                                          | [Documentación](https://docs.docker.com/)                                                              |
 | [Docker Compose](https://docs.docker.com/compose/)                                          | Orquestación de múltiples contenedores (aplicación y base de datos) en desarrollo local.                | [Documentación](https://docs.docker.com/compose/)                                                      |
 | [Render](https://render.com/) | Plataforma en la nube utilizada para desplegar y ejecutar la aplicación en producción de manera sencilla. | [Documentación](https://render.com/docs) |
@@ -56,10 +55,9 @@ Es obligatorio editarlo antes de ejecutar el proyecto, y reemplazar los valores 
 
 | Variable                | Descripción                                                                                                      |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `MYSQL_ROOT_PASSWORD`   | Contraseña del usuario root de MySQL.                                                                            |
-| `MYSQL_DATABASE`        | Nombre de la base de datos que usará la aplicación.                                                              |
-| `MYSQL_USER`            | Usuario que la aplicación utilizará para acceder a la base de datos.                                             |
-| `MYSQL_PASSWORD`        | Contraseña del usuario especificado en `MYSQL_USER`.                                                             |
+| `POSTGRES_DB`        | Nombre de la base de datos que usará la aplicación.                                                              |
+| `POSTGRES_USER`            | Usuario que la aplicación utilizará para acceder a la base de datos.                                             |
+| `POSTGRES_PASSWORD`        | Contraseña del usuario especificado en `POSTGRES_USER`.                                                             |
 | `SPRING_DATASOURCE_URL` | URL de conexión a la base de datos (generalmente `jdbc:mysql://db:3306/nombre_bd` cuando se usa Docker Compose). |
 | `JWT_SECRET`            | Clave secreta utilizada para firmar y validar los tokens JWT.                                                    |
 | `USER_GENERATOR`        | Entidad firmante del token                                                                                       |
@@ -76,7 +74,7 @@ docker-compose up --build
 
 5. Las tablas se crearán automáticamente gracias a JPA/Hibernate (no hay datos iniciales insertados).
 > [!IMPORTANT]  
-> Para probar la aplicación, es necesario crear manualmente los roles y un usuario administrador.
+> Para probar la aplicación en local, es necesario crear manualmente los roles y un usuario administrador. En el archivo [data.sql](./src/main/resources/db/data.sql) encontrará el script para insertar los roles establecidos
 
 
 ## Documentación de la API
