@@ -17,9 +17,8 @@ Sistema backend para la gestión de inscripciones a talleres, desarrollado con J
 | [MySQL](https://www.mysql.com/)                                                             | Base de datos relacional utilizada para almacenar la información de usuarios, talleres, registros, etc. | [Documentación](https://dev.mysql.com/doc/)                                                            |
 | [Docker](https://www.docker.com/)                                                           | Contenerización de la aplicación para facilitar su despliegue.                                          | [Documentación](https://docs.docker.com/)                                                              |
 | [Docker Compose](https://docs.docker.com/compose/)                                          | Orquestación de múltiples contenedores (aplicación y base de datos) en desarrollo local.                | [Documentación](https://docs.docker.com/compose/)                                                      |
-| [Amazon EC2](https://aws.amazon.com/ec2/)                                                   | Servicio de AWS utilizado para desplegar y ejecutar la aplicación en la nube.                           | [Documentación](https://docs.aws.amazon.com/ec2/)                                                      |
-| [Amazon RDS](https://aws.amazon.com/rds/)                                                   | Servicio de base de datos gestionado en AWS utilizado para la persistencia de datos en producción.       | [Documentación](https://docs.aws.amazon.com/rds/)                                                      |
-
+| [Render](https://render.com/) | Plataforma en la nube utilizada para desplegar y ejecutar la aplicación en producción de manera sencilla. | [Documentación](https://render.com/docs) |
+| [Supabase](https://supabase.com/) | Servicio de base de datos gestionado (PostgreSQL) utilizado para la persistencia de datos. | [Documentación](https://supabase.com/docs) |
 
 ## 📦 Requisitos Previos
 
@@ -80,8 +79,7 @@ docker-compose up --build
 
 
 ## Documentación de la API
-https://workshop-backend.duckdns.org/swagger-ui/index.html
-
+https://workshop-registration-system.onrender.com/swagger-ui/index.html
 
 > [!NOTE]  
 > Todos los endpoints (excepto `/auth/sign-up` y `/auth/log-in`) requieren token JWT en el header:
