@@ -80,7 +80,7 @@ docker-compose up --build
 
 
 ## Documentación de la API
-https://workshop-backend.ddns.net/swagger-ui/index.html
+https://workshop-backend.duckdns.org/swagger-ui/index.html
 
 
 > [!NOTE]  
