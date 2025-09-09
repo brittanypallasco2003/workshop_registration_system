@@ -12,8 +12,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
-@OpenAPIDefinition(info = @Info(title = "Workshop Registration System", description = "Sistema backend para la gestión de inscripciones a talleres", version = "1.0.0", contact = @Contact(name = "Brittany Espinel", url = "https://github.com/brittanypallasco2003", email = "nohemiespinel0@gmail.com")), servers = {
-        @Server(description = "PROD SERVER", url = "https://workshop-backend.duckdns.org/"),
+@OpenAPIDefinition(info = @Info(title = "Workshop Registration System", description = "Sistema backend para la gestión de inscripciones a talleres", version = "1.0.0", contact = @Contact(name = "Brittany Espinel", url = "https://brittany-portfolio.vercel.app/", email = "nohemiespinel0@gmail.com")), servers = {
+        @Server(description = "PROD SERVER", url = ""),
         @Server(description = "DEV SERVER", url = "http://localhost:8080")},security = @SecurityRequirement(name = "Security Token"))
 @SecurityScheme(name = "Security Token", description = "Access Token for my API", type = SecuritySchemeType.HTTP, paramName = HttpHeaders.AUTHORIZATION, in = SecuritySchemeIn.HEADER, scheme = "bearer", bearerFormat = "JWT")
 public class SwaggerConfig {
